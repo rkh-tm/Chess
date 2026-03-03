@@ -7,7 +7,7 @@
 int main(){
 	int error = 0;
 	if(!SDL_Init(SDL_INIT_VIDEO)){
-		printf("%s", SDL_GetError());
+		printf("%s\n", SDL_GetError());
 		error = 1;
 		goto cleanup;
 	}
@@ -16,7 +16,11 @@ int main(){
 	case SUCCESS:
 		break;
 	case SDL:
-		printf("%s", SDL_GetError());
+		printf("%s\n", SDL_GetError());
+		error = 1;
+		goto cleanup;
+	case MEMORY:
+		printf("Failed To Allocate Memory\n");
 		error = 1;
 		goto cleanup;
 	}
