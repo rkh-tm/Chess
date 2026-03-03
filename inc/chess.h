@@ -4,6 +4,7 @@
 #include <SDL3/SDL.h>
 #include "types.h"
 #include "render.h"
+#include "engine.h"
 
 Error chess();
 

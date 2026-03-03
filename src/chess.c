@@ -1,6 +1,6 @@
 #include "chess.h"
 
-#define CHECK_SDL(x) if(!(x)) {error=SDL; goto cleanup;}
+#define CHECK(x, errcode) if(!(x)) {error=errcode; goto cleanup;}
 
 Error chess(){
 	Error error = SUCCESS;
@@ -8,27 +8,30 @@ Error chess(){
 	SDL_Renderer *renderer = NULL;
 	SDL_Surface *surface_pieces, *surface_board;
 	SDL_Texture *texture_pieces, *texture_board;
+	Piece *board[8][8];
+
+	CHECK(init_board(board), MEMORY);
 
 	window = SDL_CreateWindow("Chess", 640, 640, 0);
-    CHECK_SDL(window);
+    CHECK(window, SDL);
 
 	renderer = SDL_CreateRenderer(window, NULL);
-    CHECK_SDL(renderer)
+    CHECK(renderer, SDL)
 
 	surface_pieces = SDL_LoadPNG("assets/Pieces.png");
-	CHECK_SDL(surface_pieces)
+	CHECK(surface_pieces, SDL)
 	texture_pieces = SDL_CreateTextureFromSurface(renderer, surface_pieces);
-	CHECK_SDL(texture_pieces)
+	CHECK(texture_pieces, SDL)
 
 	surface_board = SDL_LoadPNG("assets/Board.png");
-	CHECK_SDL(surface_board)
+	CHECK(surface_board, SDL)
 	texture_board = SDL_CreateTextureFromSurface(renderer, surface_board);
-	CHECK_SDL(texture_board);
+	CHECK(texture_board, SDL);
 
-	CHECK_SDL(SDL_SetTextureScaleMode(texture_pieces, SDL_SCALEMODE_PIXELART));
-	CHECK_SDL(SDL_SetTextureScaleMode(texture_board, SDL_SCALEMODE_PIXELART));
+	CHECK(SDL_SetTextureScaleMode(texture_pieces, SDL_SCALEMODE_PIXELART), SDL);
+	CHECK(SDL_SetTextureScaleMode(texture_board, SDL_SCALEMODE_PIXELART), SDL);
 
-	CHECK_SDL(render_board(renderer, texture_board));
+	CHECK(render_board(renderer, texture_board), SDL);
 
 	bool running = true;
     while (running){
@@ -50,6 +53,7 @@ Error chess(){
     }
 
 cleanup:
+	free_board(board);
 	SDL_DestroySurface(surface_pieces);
 	SDL_DestroySurface(surface_board);
 	SDL_DestroyTexture(texture_pieces);
