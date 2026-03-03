@@ -2,7 +2,7 @@
 #define CHESS_TYPES_H
 
 typedef enum{
-	SUCCESS, SDL
+	SUCCESS, SDL, MEMORY
 } Error;
 
 typedef enum{
@@ -13,14 +13,9 @@ typedef enum{
 	PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
 } Type;
 
-typedef enum{
-	ALIVE, DEAD
-} State;
-
 typedef struct{
 	Color color;
 	Type type;
-	State state;
 } Piece;
 
 #endif
