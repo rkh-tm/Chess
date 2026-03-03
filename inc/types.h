@@ -2,6 +2,10 @@
 #define CHESS_TYPES_H
 
 typedef enum{
+	SUCCESS, SDL
+} Error;
+
+typedef enum{
 	WHITE, BLACK
 } Color;
 

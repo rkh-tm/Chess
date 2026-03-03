@@ -1,0 +1,10 @@
+#ifndef CHESS_CHESS_H
+#define CHESS_CHESS_H
+
+#include <SDL3/SDL.h>
+#include "types.h"
+#include "render.h"
+
+Error chess();
+
+#endif
