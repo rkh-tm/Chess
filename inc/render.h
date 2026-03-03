@@ -2,7 +2,9 @@
 #define CHESS_RENDER_H
 
 #include <SDL3/SDL.h>
+#include "types.h"
 
-bool render_board(SDL_Renderer *renderer, SDL_Texture *texture_board);
+bool render_board(SDL_Renderer *renderer, SDL_Texture *texture_board, int width, int height);
+bool render_pieces(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height);
 
 #endif

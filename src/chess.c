@@ -31,7 +31,8 @@ Error chess(){
 	CHECK(SDL_SetTextureScaleMode(texture_pieces, SDL_SCALEMODE_PIXELART), SDL);
 	CHECK(SDL_SetTextureScaleMode(texture_board, SDL_SCALEMODE_PIXELART), SDL);
 
-	CHECK(render_board(renderer, texture_board), SDL);
+	int width, height;
+	CHECK(SDL_GetRenderOutputSize(renderer, &width, &height), SDL);
 
 	bool running = true;
     while (running){
@@ -48,6 +49,13 @@ Error chess(){
 			default: continue;
 			}
 		}
+
+		CHECK(SDL_RenderClear(renderer), SDL);
+
+		CHECK(render_board(renderer, texture_board, width, height), SDL);
+		CHECK(render_pieces(renderer, texture_pieces, board, width, height), SDL);
+
+		CHECK(SDL_RenderPresent(renderer), SDL);
 		
 		SDL_Delay(16);
     }
