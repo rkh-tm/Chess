@@ -10,7 +10,7 @@ Error chess(){
 	SDL_Texture *texture_pieces, *texture_board;
 	Piece *board[8][8];
 
-	CHECK(init_board(board), MEMORY);
+	CHECK(board_init(board), MEMORY);
 
 	window = SDL_CreateWindow("Chess", 640, 640, 0);
     CHECK(window, SDL);
@@ -46,14 +46,17 @@ Error chess(){
 				// CTRL-Q to Quit
 				if((event.key.mod & SDL_KMOD_CTRL) && event.key.key==SDLK_Q && event.key.down) running = false;
 				break;
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
+				if(event.button.button==1) printf("%d %d\n", (int)event.button.x/(width/8), 7-(int)event.button.y/(height/8));
+				break;
 			default: continue;
 			}
 		}
 
 		CHECK(SDL_RenderClear(renderer), SDL);
 
-		CHECK(render_board(renderer, texture_board, width, height), SDL);
-		CHECK(render_pieces(renderer, texture_pieces, board, width, height), SDL);
+		CHECK(board_render(renderer, texture_board, width, height), SDL);
+		CHECK(piece_render(renderer, texture_pieces, board, width, height), SDL);
 
 		CHECK(SDL_RenderPresent(renderer), SDL);
 		
@@ -61,7 +64,7 @@ Error chess(){
     }
 
 cleanup:
-	free_board(board);
+	board_free(board);
 	SDL_DestroySurface(surface_pieces);
 	SDL_DestroySurface(surface_board);
 	SDL_DestroyTexture(texture_pieces);

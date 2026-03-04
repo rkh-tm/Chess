@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "types.h"
 
-bool init_board(Piece *board[8][8]);
-void free_board(Piece *board[8][8]);
+bool board_init(Piece *board[8][8]);
+void board_free(Piece *board[8][8]);
 
 #endif

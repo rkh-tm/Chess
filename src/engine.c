@@ -1,6 +1,6 @@
 #include "engine.h"
 
-bool init_board(Piece *board[8][8]){
+bool board_init(Piece *board[8][8]){
 	for(int i=0; i<=7; i++){
 		for(int j=0; j<=7; j++){
 			board[i][j] = NULL;
@@ -30,7 +30,7 @@ bool init_board(Piece *board[8][8]){
 	return true;
 }
 
-void free_board(Piece *board[8][8]){
+void board_free(Piece *board[8][8]){
 	for(int i=0; i<=7; i++){
 		for(int j=0; j<=7; j++){
 			free(board[i][j]);

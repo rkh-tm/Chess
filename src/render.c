@@ -1,5 +1,4 @@
 #include "render.h"
-#include <stdio.h>
 
 void get_sprite_origin(Piece piece, float *x, float *y){
 	*x = (int)piece.type * 80;
@@ -8,7 +7,7 @@ void get_sprite_origin(Piece piece, float *x, float *y){
 	return;
 }
 
-bool render_board(SDL_Renderer *renderer, SDL_Texture *texture_board, int width, int height){
+bool board_render(SDL_Renderer *renderer, SDL_Texture *texture_board, int width, int height){
 	float side = (float)width / 8;
 	SDL_FRect src_white = {0, 0, 80, 80}, src_black = {80, 0, 80, 80}, dst;
 	for(int i=0; i<=7; i++){
@@ -21,13 +20,12 @@ bool render_board(SDL_Renderer *renderer, SDL_Texture *texture_board, int width,
 	return true;
 }
 
-bool render_pieces(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height){
+bool piece_render(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height){
 	float side = (float)width / 8;
 	SDL_FRect src, dst;
 	for(int i=0; i<=7; i++){
 		for(int j=0; j<=7; j++){
 			if(board[i][j]==NULL) continue;
-			printf("%d %d\n", i, j);
 
 			dst = (SDL_FRect){i*side, (7-j)*side, side, side};
 			src = (SDL_FRect){0, 0, 80, 80};
