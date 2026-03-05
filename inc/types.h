@@ -18,4 +18,8 @@ typedef struct{
 	Type type;
 } Piece;
 
+typedef struct{
+	int x, y;
+} Position;
+
 #endif
