@@ -117,9 +117,11 @@ void piece_move(Piece *board[8][8], Position last, Position selected){
 	return;
 }
 
-bool piece_select(Piece *board[8][8], Color turn, Position last, Position *selected, bool marker[8][8]){
+bool piece_select(Piece *board[8][8], Color *turn, Position last, Position *selected, bool marker[8][8]){
 	if(last.x!=-1 && last.y!=-1 && marker[selected->x][selected->y]==true){
 		piece_move(board, last, *selected);
+
+		*turn = (*turn==WHITE) ? BLACK : WHITE;
 
 		selected->x = -1;
 		selected->y = -1;
@@ -127,7 +129,7 @@ bool piece_select(Piece *board[8][8], Color turn, Position last, Position *selec
 		return true;
 	}
 
-	if(board[selected->x][selected->y]==NULL || board[selected->x][selected->y]->color!=turn){
+	if(board[selected->x][selected->y]==NULL || board[selected->x][selected->y]->color!=*turn){
 		selected->x = -1;
 		selected->y = -1;
 		marker_reset(marker);
