@@ -35,8 +35,8 @@ Error chess(){
 	CHECK(SDL_GetRenderOutputSize(renderer, &width, &height), SDL);
 
 	bool running = true;
-	Color turn = BLACK;
-	Position pos = {-1, -1};
+	Color turn = WHITE;
+	Position selected = {-1, -1};
     while (running){
 		CHECK(SDL_RenderClear(renderer), SDL);
 		CHECK(board_render(renderer, texture_board, width, height), SDL);
@@ -47,25 +47,27 @@ Error chess(){
 			switch(event.type){
 			case SDL_EVENT_QUIT:
 				running = false;
+
 				break;
 			case SDL_EVENT_KEY_DOWN:
 				// CTRL-Q to Quit
 				if((event.key.mod & SDL_KMOD_CTRL) && event.key.key==SDLK_Q && event.key.down) running = false;
+				
 				break;
 			case SDL_EVENT_MOUSE_BUTTON_DOWN:
 				if(event.button.button!=1) break;
 				
-				int x = (int)event.button.x/(width/8), y = 7-(int)event.button.y/(height/8);
-				if(!piece_select(board, turn, x, y)) break;
+				selected.x = (int)event.button.x/(width/8);
+				selected.y = 7-(int)event.button.y/(height/8);
 
-				pos = (Position){x, y};
-				
+				if(!piece_select(board, turn, selected.x, selected.y)) selected = (Position){-1, -1};
+
 				break;
 			default: continue;
 			}
 		}
 
-
+		if(selected.x!=-1) CHECK(piece_render(renderer, texture_piece, board, width, height, selected.x, selected.y), SDL);
 
 		CHECK(SDL_RenderPresent(renderer), SDL);
 		

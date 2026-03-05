@@ -37,4 +37,13 @@ bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_piece, Piece 
 	return true;
 }
 
-bool piece_render(SDL_Renderer *renderer, SDL_Texture *texture_piece);
+bool piece_render(SDL_Renderer *renderer, SDL_Texture *texture_piece, Piece *board[8][8], int width, int height, int x, int y){
+	float side = (float)width / 8;
+	SDL_FRect src={0, 0, 80, 80}, dst={x*side, (7-y)*side, side, side};
+	get_sprite_origin(*board[x][y], &src.x, &src.y);
+	src.y += 2*80;
+
+	if(!SDL_RenderTexture(renderer, texture_piece, &src, &dst)) return false;
+
+	return true;
+}
