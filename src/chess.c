@@ -63,10 +63,7 @@ Error chess(){
 				selected.x = (int)event.button.x/(width/8);
 				selected.y = 7-(int)event.button.y/(height/8);
 
-				if(!piece_select(board, turn, selected.x, selected.y, marker)){
-					selected = (Position){-1, -1};
-					marker_reset(marker);
-				}
+				piece_select(board, turn, &selected.x, &selected.y, marker);
 
 				break;
 			default: continue;

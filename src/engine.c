@@ -89,13 +89,28 @@ void marker_reset(bool marker[8][8]){
 }
 
 void marker_update(Piece *board[8][8], int x, int y, bool marker[8][8]){
+	int color = (board[x][y]->color==WHITE) ? 1 : -1;
+	switch(board[x][y]->type){
+	case PAWN:
+		int startpos = (board[x][y]->color==WHITE) ? 1 : 6;
+		if(0<=y+1*color && y+1*color<=7 && board[x][y+1*color]==NULL) marker[x][y+1*color] = true;
+		if(y==startpos && 0<=y+2*color && y+2*color<=7 && board[x][y+2*color]==NULL) marker[x][y+2*color] = true;
+		break;
+	default:
+		break;
+	}
 
+	return;
 }
 
-bool piece_select(Piece *board[8][8], Color turn, int x, int y, bool marker[8][8]){
-	if(x>=8 || y>=8) return false;
-	if(board[x][y]==NULL) return false;
-	if(board[x][y]->color!=turn) return false;
+bool piece_select(Piece *board[8][8], Color turn, int *x, int *y, bool marker[8][8]){
+	if(*x>=8 || *y>=8 || board[*x][*y]==NULL || board[*x][*y]->color!=turn){
+		*x = -1;
+		*y = -1;
+		marker_reset(marker);
+	}
+
+	marker_update(board, *x, *y, marker);
 
 	return true;
 }
