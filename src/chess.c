@@ -70,7 +70,7 @@ Error chess(){
 			}
 		}
 
-		if(selected.x!=-1) CHECK(piece_render(renderer, texture_piece, board, width, height, selected.x, selected.y), SDL);
+		CHECK(piece_render(renderer, texture_piece, board, width, height, selected.x, selected.y), SDL);
 
 		CHECK(SDL_RenderPresent(renderer), SDL);
 		
