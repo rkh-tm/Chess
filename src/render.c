@@ -20,7 +20,7 @@ bool board_render(SDL_Renderer *renderer, SDL_Texture *texture_board, int width,
 	return true;
 }
 
-bool piece_render(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height){
+bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height){
 	float side = (float)width / 8;
 	SDL_FRect src, dst;
 	for(int i=0; i<=7; i++){
