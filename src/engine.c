@@ -1,31 +1,60 @@
 #include "engine.h"
 
+// reference is rotated 90 degrees clockwise
+char reference[8][8][2] = {{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"},
+							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
+							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
+							{"WQ", "WK", "XX", "XX", "XX", "XX", "BP", "BQ"},
+							{"WK", "WP", "XX", "XX", "XX", "XX", "BP", "BK"},
+							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
+							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
+							{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"}};
+
 bool board_init(Piece *board[8][8]){
 	for(int i=0; i<=7; i++){
 		for(int j=0; j<=7; j++){
-			board[i][j] = NULL;
+			board[i][j] = malloc(sizeof(Piece));
+			if(!board[i][j]) return false;
+
+			switch(reference[i][j][0]){
+			case 'W':
+				board[i][j]->color = WHITE;
+				break;
+			case 'B':
+				board[i][j]->color = BLACK;
+				break;
+			default:
+				free(board[i][j]);
+				board[i][j] = NULL;
+				continue;
+			}
+
+			switch(reference[i][j][1]){
+			case 'P':
+				board[i][j]->type = PAWN;
+				break;
+			case 'R':
+				board[i][j]->type = ROOK;
+				break;
+			case 'N':
+				board[i][j]->type = KNIGHT;
+				break;
+			case 'B':
+				board[i][j]->type = BISHOP;
+				break;
+			case 'Q':
+				board[i][j]->type = QUEEN;
+				break;
+			case 'K':
+				board[i][j]->type = KING;
+				break;
+			default:
+				free(board[i][j]);
+				board[i][j] = NULL;
+				continue;
+			}
 		}
 	}
-
-	Type pieces[] = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
-	for(int col='a'; col<='h'; col++){
-		board[col-'a'][2-1] = malloc(sizeof(Piece));
-		if(!board[col-'a'][2-1]) return false;
-		*board[col-'a'][2-1] = (Piece){WHITE, PAWN};
-
-		board[col-'a'][7-1] = malloc(sizeof(Piece));
-		if(!board[col-'a'][7-1]) return false;
-		*board[col-'a'][7-1] = (Piece){BLACK, PAWN};
-
-		board[col-'a'][1-1] = malloc(sizeof(Piece));
-		if(!board[col-'a'][1-1]) return false;
-		*board[col-'a'][1-1] = (Piece){WHITE, pieces[col-'a']};
-
-		board[col-'a'][8-1] = malloc(sizeof(Piece));
-		if(!board[col-'a'][8-1]) return false;
-		*board[col-'a'][8-1] = (Piece){BLACK, pieces[col-'a']};
-	}
-
 
 	return true;
 }
