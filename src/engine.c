@@ -13,9 +13,9 @@
 char reference[8][8][2] = {{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
 							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
 							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
-							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "BP", "XX", "XX", "XX", "XX", "XX"},
 							{"XX", "WP", "XX", "XX", "XX", "XX", "XX", "XX"},
-							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "BP", "XX", "XX", "XX", "XX", "XX"},
 							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
 							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"}};
 
@@ -90,10 +90,15 @@ void marker_reset(bool marker[8][8]){
 
 void marker_update(Piece *board[8][8], int x, int y, bool marker[8][8]){
 	int color = (board[x][y]->color==WHITE) ? 1 : -1;
+	Color opposite = (board[x][y]->color==WHITE) ? BLACK : WHITE;
 	switch(board[x][y]->type){
 	case PAWN:
 		int startpos = (board[x][y]->color==WHITE) ? 1 : 6;
-		if(0<=y+1*color && y+1*color<=7 && board[x][y+1*color]==NULL) marker[x][y+1*color] = true;
+		if(0<=y+1*color && y+1*color<=7){
+			if(board[x][y+1*color]==NULL) marker[x][y+1*color] = true;
+			if(x+1<=7 && board[x+1][y+1*color]!=NULL && board[x+1][y+1*color]->color==opposite) marker[x+1][y+1*color] = true;
+			if(0<=x-1 && board[x-1][y+1*color]!=NULL && board[x-1][y+1*color]->color==opposite) marker[x-1][y+1*color] = true;
+		}
 		if(y==startpos && 0<=y+2*color && y+2*color<=7 && board[x][y+2*color]==NULL) marker[x][y+2*color] = true;
 		break;
 	default:
