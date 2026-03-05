@@ -60,10 +60,10 @@ Error chess(){
 			case SDL_EVENT_MOUSE_BUTTON_DOWN:
 				if(event.button.button!=1) break;
 				
-				selected.x = (int)event.button.x/(width/8);
-				selected.y = 7-(int)event.button.y/(height/8);
+				Position last = selected;
+				selected = (Position){(int)event.button.x/(width/8), 7-(int)event.button.y/(height/8)};
 
-				piece_select(board, turn, &selected.x, &selected.y, marker);
+				piece_select(board, turn, last, &selected, marker);
 
 				break;
 			default: continue;

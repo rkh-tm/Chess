@@ -108,14 +108,33 @@ void marker_update(Piece *board[8][8], int x, int y, bool marker[8][8]){
 	return;
 }
 
-bool piece_select(Piece *board[8][8], Color turn, int *x, int *y, bool marker[8][8]){
-	if(*x>=8 || *y>=8 || board[*x][*y]==NULL || board[*x][*y]->color!=turn){
-		*x = -1;
-		*y = -1;
+void piece_move(Piece *board[8][8], Position last, Position selected){
+	if(board[selected.x][selected.y]!=NULL) free(board[selected.x][selected.y]);
+
+	board[selected.x][selected.y] = board[last.x][last.y];
+	board[last.x][last.y] = NULL;
+
+	return;
+}
+
+bool piece_select(Piece *board[8][8], Color turn, Position last, Position *selected, bool marker[8][8]){
+	if(last.x!=-1 && last.y!=-1 && marker[selected->x][selected->y]==true){
+		piece_move(board, last, *selected);
+
+		selected->x = -1;
+		selected->y = -1;
 		marker_reset(marker);
+		return true;
 	}
 
-	marker_update(board, *x, *y, marker);
+	if(board[selected->x][selected->y]==NULL || board[selected->x][selected->y]->color!=turn){
+		selected->x = -1;
+		selected->y = -1;
+		marker_reset(marker);
+		return true;
+	}
+
+	marker_update(board, selected->x, selected->y, marker);
 
 	return true;
 }
