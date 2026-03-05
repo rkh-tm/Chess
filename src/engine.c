@@ -1,14 +1,23 @@
 #include "engine.h"
 
 // reference is rotated 90 degrees clockwise
-char reference[8][8][2] = {{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"},
-							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
-							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
-							{"WQ", "WK", "XX", "XX", "XX", "XX", "BP", "BQ"},
-							{"WK", "WP", "XX", "XX", "XX", "XX", "BP", "BK"},
-							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
-							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
-							{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"}};
+// char reference[8][8][2] = {{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"},
+// 							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
+// 							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
+// 							{"WQ", "WP", "XX", "XX", "XX", "XX", "BP", "BQ"},
+// 							{"WK", "WP", "XX", "XX", "XX", "XX", "BP", "BK"},
+// 							{"WB", "WP", "XX", "XX", "XX", "XX", "BP", "BB"},
+// 							{"WN", "WP", "XX", "XX", "XX", "XX", "BP", "BN"},
+// 							{"WR", "WP", "XX", "XX", "XX", "XX", "BP", "BR"}};
+
+char reference[8][8][2] = {{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "WP", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"},
+							{"XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"}};
 
 bool board_init(Piece *board[8][8]){
 	for(int i=0; i<=7; i++){
@@ -69,7 +78,21 @@ void board_free(Piece *board[8][8]){
 	return;
 }
 
-bool piece_select(Piece *board[8][8], Color turn, int x, int y){
+void marker_reset(bool marker[8][8]){
+	for(int i=0; i<=7; i++){
+		for(int j=0; j<=7; j++){
+			marker[i][j] = false;
+		}
+	}
+
+	return;
+}
+
+void marker_update(Piece *board[8][8], int x, int y, bool marker[8][8]){
+
+}
+
+bool piece_select(Piece *board[8][8], Color turn, int x, int y, bool marker[8][8]){
 	if(x>=8 || y>=8) return false;
 	if(board[x][y]==NULL) return false;
 	if(board[x][y]->color!=turn) return false;

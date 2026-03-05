@@ -37,6 +37,9 @@ Error chess(){
 	bool running = true;
 	Color turn = WHITE;
 	Position selected = {-1, -1};
+	bool marker[8][8];
+	marker_reset(marker);
+
     while (running){
 		CHECK(SDL_RenderClear(renderer), SDL);
 		CHECK(board_render(renderer, texture_board, width, height), SDL);
@@ -60,7 +63,10 @@ Error chess(){
 				selected.x = (int)event.button.x/(width/8);
 				selected.y = 7-(int)event.button.y/(height/8);
 
-				if(!piece_select(board, turn, selected.x, selected.y)) selected = (Position){-1, -1};
+				if(!piece_select(board, turn, selected.x, selected.y, marker)){
+					selected = (Position){-1, -1};
+					marker_reset(marker);
+				}
 
 				break;
 			default: continue;
