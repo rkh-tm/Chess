@@ -5,6 +5,6 @@
 #include "types.h"
 
 bool board_render(SDL_Renderer *renderer, SDL_Texture *texture_board, int width, int height);
-bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height);
+bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_piece, Piece *board[8][8], int width, int height);
 
 #endif

@@ -6,5 +6,6 @@
 
 bool board_init(Piece *board[8][8]);
 void board_free(Piece *board[8][8]);
+bool piece_select(Piece *board[8][8], Color turn, int x, int y);
 
 #endif

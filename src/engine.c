@@ -39,3 +39,11 @@ void board_free(Piece *board[8][8]){
 
 	return;
 }
+
+bool piece_select(Piece *board[8][8], Color turn, int x, int y){
+	if(x>=8 || y>=8) return false;
+	if(board[x][y]==NULL) return false;
+	if(board[x][y]->color!=turn) return false;
+
+	return true;
+}

@@ -6,8 +6,8 @@ Error chess(){
 	Error error = SUCCESS;
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
-	SDL_Surface *surface_pieces, *surface_board;
-	SDL_Texture *texture_pieces, *texture_board;
+	SDL_Surface *surface_piece, *surface_board;
+	SDL_Texture *texture_piece, *texture_board;
 	Piece *board[8][8];
 
 	CHECK(board_init(board), MEMORY);
@@ -18,24 +18,30 @@ Error chess(){
 	renderer = SDL_CreateRenderer(window, NULL);
     CHECK(renderer, SDL)
 
-	surface_pieces = SDL_LoadPNG("assets/Pieces.png");
-	CHECK(surface_pieces, SDL)
-	texture_pieces = SDL_CreateTextureFromSurface(renderer, surface_pieces);
-	CHECK(texture_pieces, SDL)
+	surface_piece = SDL_LoadPNG("assets/Pieces.png");
+	CHECK(surface_piece, SDL)
+	texture_piece = SDL_CreateTextureFromSurface(renderer, surface_piece);
+	CHECK(texture_piece, SDL)
 
 	surface_board = SDL_LoadPNG("assets/Board.png");
 	CHECK(surface_board, SDL)
 	texture_board = SDL_CreateTextureFromSurface(renderer, surface_board);
 	CHECK(texture_board, SDL);
 
-	CHECK(SDL_SetTextureScaleMode(texture_pieces, SDL_SCALEMODE_PIXELART), SDL);
+	CHECK(SDL_SetTextureScaleMode(texture_piece, SDL_SCALEMODE_PIXELART), SDL);
 	CHECK(SDL_SetTextureScaleMode(texture_board, SDL_SCALEMODE_PIXELART), SDL);
 
 	int width, height;
 	CHECK(SDL_GetRenderOutputSize(renderer, &width, &height), SDL);
 
 	bool running = true;
+	Color turn = BLACK;
+	Position pos = {-1, -1};
     while (running){
+		CHECK(SDL_RenderClear(renderer), SDL);
+		CHECK(board_render(renderer, texture_board, width, height), SDL);
+		CHECK(piece_render_all(renderer, texture_piece, board, width, height), SDL);
+
 		SDL_Event event;
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
@@ -47,16 +53,19 @@ Error chess(){
 				if((event.key.mod & SDL_KMOD_CTRL) && event.key.key==SDLK_Q && event.key.down) running = false;
 				break;
 			case SDL_EVENT_MOUSE_BUTTON_DOWN:
-				if(event.button.button==1) printf("%d %d\n", (int)event.button.x/(width/8), 7-(int)event.button.y/(height/8));
+				if(event.button.button!=1) break;
+				
+				int x = (int)event.button.x/(width/8), y = 7-(int)event.button.y/(height/8);
+				if(!piece_select(board, turn, x, y)) break;
+
+				pos = (Position){x, y};
+				
 				break;
 			default: continue;
 			}
 		}
 
-		CHECK(SDL_RenderClear(renderer), SDL);
 
-		CHECK(board_render(renderer, texture_board, width, height), SDL);
-		CHECK(piece_render(renderer, texture_pieces, board, width, height), SDL);
 
 		CHECK(SDL_RenderPresent(renderer), SDL);
 		
@@ -65,9 +74,9 @@ Error chess(){
 
 cleanup:
 	board_free(board);
-	SDL_DestroySurface(surface_pieces);
+	SDL_DestroySurface(surface_piece);
 	SDL_DestroySurface(surface_board);
-	SDL_DestroyTexture(texture_pieces);
+	SDL_DestroyTexture(texture_piece);
 	SDL_DestroyTexture(texture_board);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);

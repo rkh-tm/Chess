@@ -20,7 +20,7 @@ bool board_render(SDL_Renderer *renderer, SDL_Texture *texture_board, int width,
 	return true;
 }
 
-bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece *board[8][8], int width, int height){
+bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_piece, Piece *board[8][8], int width, int height){
 	float side = (float)width / 8;
 	SDL_FRect src, dst;
 	for(int i=0; i<=7; i++){
@@ -30,9 +30,11 @@ bool piece_render_all(SDL_Renderer *renderer, SDL_Texture *texture_pieces, Piece
 			dst = (SDL_FRect){i*side, (7-j)*side, side, side};
 			src = (SDL_FRect){0, 0, 80, 80};
 			get_sprite_origin(*board[i][j], &src.x, &src.y);
-			if(!SDL_RenderTexture(renderer, texture_pieces, &src, &dst)) return false;
+			if(!SDL_RenderTexture(renderer, texture_piece, &src, &dst)) return false;
 		}
 	}
 
 	return true;
 }
+
+bool piece_render(SDL_Renderer *renderer, SDL_Texture *texture_piece);
