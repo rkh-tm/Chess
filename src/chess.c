@@ -38,7 +38,7 @@ Error chess(){
 	Color turn = WHITE;
 	Position selected = {-1, -1};
 	bool marker[8][8];
-	marker_reset(marker);
+	memset(marker, 0, sizeof(marker));
 
     while (running){
 		CHECK(SDL_RenderClear(renderer), SDL);
